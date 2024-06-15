@@ -1,0 +1,334 @@
+<!DOCTYPE html><html lang="zh-Hans" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数据库开发 复习笔记 | Nuit's Blog</title><meta name="author" content="Nuit-Silencieuse"><meta name="copyright" content="Nuit-Silencieuse"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="此篇是《数据库开发》的考试周复习笔记。 索引结构B树 (B+树)数据结构的目标： ​	高扇出，以改善临近键的数据局限性； ​	低高度，以减少遍历期间的寻道次数  扇出（fanout）：每个节点允许最大的子节点  树高（tree height）：树的高度     B树的节点分裂 Step 1:分配一个新节点  Step 2:一半元素从分裂节点复制到新节点点  Step 3:新元素放入相应的节点  S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库开发 复习笔记">
+<meta property="og:url" content="https://nuit-silencieuse.github.io/post/6e6df8a7.html">
+<meta property="og:site_name" content="Nuit&#39;s Blog">
+<meta property="og:description" content="此篇是《数据库开发》的考试周复习笔记。 索引结构B树 (B+树)数据结构的目标： ​	高扇出，以改善临近键的数据局限性； ​	低高度，以减少遍历期间的寻道次数  扇出（fanout）：每个节点允许最大的子节点  树高（tree height）：树的高度     B树的节点分裂 Step 1:分配一个新节点  Step 2:一半元素从分裂节点复制到新节点点  Step 3:新元素放入相应的节点  S">
+<meta property="og:locale">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2024-06-14T14:57:30.000Z">
+<meta property="article:modified_time" content="2024-06-15T14:20:42.924Z">
+<meta property="article:author" content="Nuit-Silencieuse">
+<meta property="article:tag" content="SQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://nuit-silencieuse.github.io/post/6e6df8a7.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据库开发 复习笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-06-15 22:20:42'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Nuit's Blog"><span class="site-name">Nuit's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">数据库开发 复习笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-06-14T14:57:30.000Z" title="Created 2024-06-14 22:57:30">2024-06-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-06-15T14:20:42.924Z" title="Updated 2024-06-15 22:20:42">2024-06-15</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="数据库开发 复习笔记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>此篇是《数据库开发》的考试周复习笔记。</p>
+<h2 id="索引结构"><a href="#索引结构" class="headerlink" title="索引结构"></a>索引结构</h2><h3 id="B树-B-树"><a href="#B树-B-树" class="headerlink" title="B树 (B+树)"></a>B树 (B+树)</h3><p>数据结构的目标：</p>
+<p>​	<strong>高扇出</strong>，以改善临近键的数据局限性；</p>
+<p>​	<strong>低高度</strong>，以减少遍历期间的寻道次数</p>
+<ul>
+<li><p>扇出（fanout）：每个节点允许最大的子节点</p>
+</li>
+<li><p>树高（tree height）：树的高度</p>
+</li>
+</ul>
+<p><img src="/post/6e6df8a7/image-20240614230804812.png" alt="image-20240614230804812"></p>
+<p><img src="/post/6e6df8a7/image-20240614230901189.png" alt="image-20240614230901189"></p>
+<h3 id="B树的节点分裂"><a href="#B树的节点分裂" class="headerlink" title="B树的节点分裂"></a>B树的节点分裂</h3><ul>
+<li><p>Step 1:分配一个新节点</p>
+</li>
+<li><p>Step 2:一半元素从分裂节点复制到新节点点</p>
+</li>
+<li><p>Step 3:新元素放入相应的节点</p>
+</li>
+<li><p>Step 4:在分裂节点的父节点处，添加一个分割键和指向新节点的指针</p>
+</li>
+</ul>
+<p><strong>注意</strong>：分裂会递归传导，甚至到根节点，“自下而上”的构建</p>
+<p><img src="/post/6e6df8a7/image-20240614231943111.png" alt="image-20240614231943111"></p>
+<p><img src="/post/6e6df8a7/assets/image-20240614232846152.png" alt="image-20240614232846152"></p>
+<ul>
+<li><p>Step 1:查找算法定位目标叶节点，并将新值关联</p>
+</li>
+<li><p>Step 2:有空就插⼊，没空就叫“节点溢出”overflow，必须分裂</p>
+<ul>
+<li><p>C1:叶节点：超过Max（N）最多容纳N个键值对</p>
+</li>
+<li><p>C2:非叶节点：指针超过Max（N+1）</p>
+</li>
+</ul>
+</li>
+<li><p>Step 3:分裂——分配新节点，将⼀半元素从原分裂节点传输给它，并添加它的第⼀个键和指向⽗节点的指针，这时候，键被提升了（promote）</p>
+</li>
+</ul>
+<p>执⾏分裂的数组下标称之为分裂点（也叫中点），分裂点之后的所有元素被传输到新创建的兄弟节点</p>
+<h3 id="B树的节点合并"><a href="#B树的节点合并" class="headerlink" title="B树的节点合并"></a>B树的节点合并</h3><p><img src="/post/6e6df8a7/image-20240614233952976.png" alt="image-20240614233952976"></p>
+<p>节点合并的判定条件： 节点最大容纳N个键值对，N+1个指针</p>
+<p>对于叶节点：两个相邻节点中的键值对数量 小于或等于 N</p>
+<p>对于非叶节点：两个相邻节点中指针的数量 小于或等于 N+1</p>
+<p>⼀般50%是树状结构节点占用率的阈值</p>
+<p><img src="/post/6e6df8a7/image-20240614235840750.png" alt="image-20240614235840750"></p>
+<h2 id="分区、分表、分库"><a href="#分区、分表、分库" class="headerlink" title="分区、分表、分库"></a>分区、分表、分库</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lei_1994/article/details/85248667">数据库分表、分区、分库详解_怎么分库的、分表、分区-CSDN博客</a></p>
+<h3 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h3><p>• 分区</p>
+<p>​	就是把一张表的数据分成N个区块，在逻辑上看最终只是一张表，但底层是由N个物理区块组成的。</p>
+<p>• 分表（手搓分区）</p>
+<p>​	就是把一张表按一定的规则分解成N个具有独立存储空间的实体表。</p>
+<p>​	系统读写时需要根据定义好的规则得到对应的字表明，然后操作它。</p>
+<p>• 分库</p>
+<p>​	一旦分表，一个库中的表会越来越多。</p>
+<p>• IO瓶颈</p>
+<p>​	热点数据太多，数据缓存不够，每次查询产生大量IO——分库、垂直分表</p>
+<p>​	网络IO瓶颈，请求的数据太多，带宽不够、连接数过多——分库</p>
+<p>• CPU瓶颈</p>
+<p>​	SQL问题，join、group by、order by——SQL优化，构建索引</p>
+<p>​	单表数据量过大，扫描行太多，SQL效率过低——水平分表</p>
+<h3 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h3><h4 id="什么时候考虑使用分区？"><a href="#什么时候考虑使用分区？" class="headerlink" title="什么时候考虑使用分区？"></a>什么时候考虑使用分区？</h4><ul>
+<li>一张表的查询速度已经慢到影响使用的时候。</li>
+<li>sql经过优化</li>
+<li>数据量大</li>
+<li>表中的数据是分段的</li>
+<li>对数据的操作往往只涉及一部分数据，而不是所有的数据</li>
+</ul>
+<h4 id="分区解决的问题"><a href="#分区解决的问题" class="headerlink" title="分区解决的问题"></a>分区解决的问题</h4><p>主要可以提升查询效率</p>
+<h3 id="分表"><a href="#分表" class="headerlink" title="分表"></a>分表</h3><h4 id="分表解决的问题"><a href="#分表解决的问题" class="headerlink" title="分表解决的问题"></a>分表解决的问题</h4><p>分表后，单表的并发能力提高了，磁盘I&#x2F;O性能也提高了，写操作效率提高了</p>
+<ul>
+<li>查询一次的时间短了</li>
+<li>数据分布在不同的文件，磁盘I&#x2F;O性能提高</li>
+<li>读写锁影响的数据量变小</li>
+<li>插入数据库需要重新建立索引的数据减少</li>
+</ul>
+<h4 id="分区和分表的区别与联系"><a href="#分区和分表的区别与联系" class="headerlink" title="分区和分表的区别与联系"></a>分区和分表的区别与联系</h4><ul>
+<li>分区和分表的目的都是减少数据库的负担，提高表的增删改查效率。</li>
+<li>分区只是一张表中的数据的存储位置发生改变，分表是将一张表分成多张表。</li>
+<li>当访问量大，且表数据比较大时，两种方式可以互相配合使用。</li>
+<li>当访问量不大，但表数据比较多时，可以只进行分区。</li>
+</ul>
+<h3 id="分库"><a href="#分库" class="headerlink" title="分库"></a>分库</h3><h4 id="什么时候考虑使用分库？"><a href="#什么时候考虑使用分库？" class="headerlink" title="什么时候考虑使用分库？"></a>什么时候考虑使用分库？</h4><ul>
+<li>单台DB的存储空间不够</li>
+<li>随着查询量的增加单台数据库服务器已经没办法支撑</li>
+</ul>
+<h4 id="分库解决的问题"><a href="#分库解决的问题" class="headerlink" title="分库解决的问题"></a>分库解决的问题</h4><p>其主要目的是为突破单节点数据库服务器的 I&#x2F;O 能力限制，解决数据库扩展性问题。 </p>
+<h4 id="垂直拆分"><a href="#垂直拆分" class="headerlink" title="垂直拆分"></a>垂直拆分</h4><p>将系统中不存在关联关系或者需要join的表可以放在不同的数据库不同的服务器中。</p>
+<p>按照业务垂直划分。比如：可以按照业务分为资金、会员、订单三个数据库。</p>
+<p>需要解决的问题：跨数据库的事务、jion查询等问题。</p>
+<h4 id="水平拆分"><a href="#水平拆分" class="headerlink" title="水平拆分"></a>水平拆分</h4><p>例如，大部分的站点。数据都是和用户有关，那么可以根据用户，将数据按照用户水平拆分。</p>
+<p>按照规则划分，一般水平分库是在垂直分库之后的。比如每天处理的订单数量是海量的，可以按照一定的规则水平划分。需要解决的问题：数据路由、组装。</p>
+<h4 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h4><p>对于时效性不高的数据，可以通过读写分离缓解数据库压力。需要解决的问题：在业务上区分哪些业务上是允许一定时间延迟的，以及数据同步问题。</p>
+<h2 id="Redo、Undo日志"><a href="#Redo、Undo日志" class="headerlink" title="Redo、Undo日志"></a>Redo、Undo日志</h2><h3 id="Redo-log-Undo-log-概览"><a href="#Redo-log-Undo-log-概览" class="headerlink" title="Redo log &amp; Undo log 概览"></a>Redo log &amp; Undo log 概览</h3><ul>
+<li><strong>undo log（回滚日志）</strong>：是 Innodb 存储引擎层生成的日志，实现了事务中的<strong>原子性</strong>，主要<strong>用于事务回滚和 MVCC</strong>。</li>
+<li><strong>redo log（重做日志）</strong>：是 Innodb 存储引擎层生成的日志，实现了事务中的<strong>持久性</strong>，主要<strong>用于掉电等故障恢复</strong>；</li>
+<li><strong>binlog （归档日志）</strong>：是 Server 层生成的日志，主要<strong>用于数据备份和主从复制</strong>；</li>
+</ul>
+<p><img src="/post/6e6df8a7/image-20240615150108864.png" alt="image-20240615150108864"></p>
+<p>• Undo：<u>一个事务在执行过程中，还未提交，发生崩溃或者需要回滚</u></p>
+<p>​	作用：<u>保障原⼦性、实现MVCC（多版本并发控制）</u></p>
+<p>​	• Undo log 撤销回滚的日志，记录更新前的数据到Undo日志文件中</p>
+<p>​	• Undo日志记录的是**<u>操作记录</u>**，<u>插入记录主键、删除记录内容、更新记录旧值</u></p>
+<p>​	• Undo日志只在乎“操作之前”<u>（roll_pointer指针串成链表&#x2F;<strong>版本表</strong>，trx_id事务id）</u></p>
+<p>• Redo：<u>掉电，磁盘I&#x2F;O崩了，之前提交的记录如何保存（crash-safe 奔溃恢复）</u></p>
+<p>​	作用：<u>保障持久性</u></p>
+<p>​	• 事务提交时，未必检查点同步，<u>事务提交成功的标记</u>是——Redo日志持久化了</p>
+<p>​	• Redo日志记录的是**<u>物理修改</u>**，（<u>xxx数据页yyy的偏移量做了zzz的修改</u>&#x2F;影子页）</p>
+<p>​	• 循环写，不用于备份恢复、主从复制，用于<u>掉电等故障恢复</u>——binlog用于全局备份</p>
+<h3 id="Undo-log"><a href="#Undo-log" class="headerlink" title="Undo log"></a>Undo log</h3><h4 id="为什么需要Undo-log？"><a href="#为什么需要Undo-log？" class="headerlink" title="为什么需要Undo log？"></a>为什么需要Undo log？</h4><p>• Undo：<u>一个事务在执行过程中，还未提交，发生崩溃或者需要回滚</u></p>
+<p>​	每次在事务执行过程中，都记录下回滚时需要的信息到一个日志里，那么在事务执行中途发生了 MySQL 崩溃后，就不用担心无法回滚到事务之前的数据，我们可以通过这个日志回滚到事务之前的数据。</p>
+<p>​	实现这一机制就是 <strong>undo log（回滚日志），它保证了事务的 <a target="_blank" rel="noopener" href="https://xiaolincoding.com/mysql/transaction/mvcc.html#%E4%BA%8B%E5%8A%A1%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E6%80%A7">ACID 特性 (opens new window)</a>中的原子性（Atomicity）</strong>。</p>
+<p>undo log 两大作用：</p>
+<ul>
+<li><strong>实现事务回滚，保障事务的原子性</strong>。事务处理过程中，如果出现了错误或者用户执行了 ROLLBACK 语句，MySQL 可以利用 undo log 中的历史数据将数据恢复到事务开始之前的状态。</li>
+<li><strong>实现 MVCC（多版本并发控制）关键因素之一</strong>。MVCC 是通过 ReadView + undo log 实现的。undo log 为每条记录保存多份历史数据，MySQL 在执行快照读（普通 select 语句）的时候，会根据事务的 Read View 里的信息，顺着 undo log 的版本链找到满足其可见性的记录。</li>
+</ul>
+<p>​	对于「读提交」和「可重复读」隔离级别的事务来说，它们的快照读（普通 select 语句）是通过 Read View + undo log 来实现的。</p>
+<p>​	这两个隔离级别实现是通过「事务的 Read View 里的字段」和「记录中的两个隐藏列（trx_id 和 roll_pointer）」的比对，如果不满足可见行，就会顺着 undo log 版本链里找到满足其可见性的记录，从而控制并发事务访问同一个记录时的行为，这就叫 MVCC（多版本并发控制）。</p>
+<h4 id="什么是Undo-log？"><a href="#什么是Undo-log？" class="headerlink" title="什么是Undo log？"></a>什么是Undo log？</h4><p>​	一条记录的每一次更新操作产生的 undo log 格式都有一个 roll_pointer 指针和一个 trx_id 事务id：</p>
+<ul>
+<li>通过 trx_id 可以知道该记录是被哪个事务修改的；</li>
+<li>通过 roll_pointer 指针可以将这些 undo log 串成一个链表，这个链表就被称为版本链；</li>
+</ul>
+<p>版本链如下图：</p>
+<p><img src="/post/6e6df8a7/%E7%89%88%E6%9C%AC%E9%93%BE.png" alt="版本链"></p>
+<h4 id="Undo-log怎么做"><a href="#Undo-log怎么做" class="headerlink" title="Undo log怎么做?"></a>Undo log怎么做?</h4><p>​	每当 InnoDB 引擎对一条记录进行操作（修改、删除、新增）时，要把回滚时需要的信息都记录到 undo log 里，比如：</p>
+<ul>
+<li>在**<u>插入</u><strong>一条记录时，要把这条记录的</strong><u>主键值</u><strong>记下来，这样之后回滚时只需要把这个主键值对应的记录</strong>删掉**就好了；</li>
+<li>在**<u>删除</u><strong>一条记录时，要把这条记录中的</strong><u>内容</u><strong>都记下来，这样之后回滚时再把由这些内容组成的记录</strong>插入**到表中就好了；</li>
+<li>在**<u>更新</u><strong>一条记录时，要把被</strong><u>更新的列的旧值</u><strong>记下来，这样之后回滚时再把这些列</strong>更新为旧值**就好了。</li>
+</ul>
+<p>​	在事务没提交之前，MySQL 会先记录更新前的数据到 undo log 日志文件里面，当事务回滚时，可以利用 undo log 来进行回滚。如下图：</p>
+<p><img src="/post/6e6df8a7/%E5%9B%9E%E6%BB%9A%E4%BA%8B%E5%8A%A1.png" alt="回滚事务"></p>
+<h3 id="Redo-log"><a href="#Redo-log" class="headerlink" title="Redo log"></a>Redo log</h3><h4 id="为什么需要Redo-log？"><a href="#为什么需要Redo-log？" class="headerlink" title="为什么需要Redo log？"></a>为什么需要Redo log？</h4><p>• Redo：<u>掉电，磁盘I&#x2F;O崩了，之前提交的记录如何保存（crash-safe 崩溃恢复）</u></p>
+<p>​	为了防止断电导致数据丢失的问题，当有一条记录需要更新的时候，InnoDB 引擎就会先更新内存（同时标记为脏页），然后将本次对这个页的修改以 redo log 的形式记录下来，<strong>这个时候更新就算完成了</strong>。</p>
+<p>​	后续，InnoDB 引擎会在适当的时候，由后台线程将缓存在 Buffer Pool 的脏页刷新到磁盘里，这就是 <strong>WAL （Write-Ahead Logging）技术</strong>。</p>
+<p>​	<strong>WAL 技术指的是， MySQL 的写操作并不是立刻写到磁盘上，而是先写日志，然后在合适的时间再写到磁盘上</strong>。</p>
+<p>​	<strong>Redo log 保证了事务四大特性中的持久性</strong>。</p>
+<p>过程如下图：</p>
+<p><img src="/post/6e6df8a7/wal.png" alt="img"></p>
+<h4 id="什么是-Redo-log？"><a href="#什么是-Redo-log？" class="headerlink" title="什么是 Redo log？"></a>什么是 Redo log？</h4><p>​	redo log 是**<u>物理日志</u><strong>，记录了某个数据页做了什么修改，比如</strong>对 XXX 表空间中的 YYY 数据页 ZZZ 偏移量的地方做了AAA 更新**，每当执行一个事务就会产生这样的一条或者多条物理日志。</p>
+<p>​	在事务提交时，只要先将 redo log 持久化到磁盘即可，可以不需要等到将缓存在 Buffer Pool 里的脏页数据持久化到磁盘。</p>
+<p>​	当系统崩溃时，虽然脏页数据没有持久化，但是 redo log 已经持久化，接着 MySQL 重启后，可以根据 redo log 的内容，将所有数据恢复到最新的状态。</p>
+<h3 id="Redo-log-Undo-log-联系"><a href="#Redo-log-Undo-log-联系" class="headerlink" title="Redo log &amp; Undo log 联系"></a>Redo log &amp; Undo log 联系</h3><h4 id="修改-Undo-页面，需要记录对应-redo-log-吗？"><a href="#修改-Undo-页面，需要记录对应-redo-log-吗？" class="headerlink" title="修改 Undo 页面，需要记录对应 redo log 吗？"></a>修改 Undo 页面，需要记录对应 redo log 吗？</h4><p>需要的。</p>
+<p>开启事务后，InnoDB 层更新记录前，首先要记录相应的 undo log，如果是更新操作，需要把被更新的列的旧值记下来，也就是要生成一条 undo log，undo log 会写入 Buffer Pool 中的 Undo 页面。</p>
+<p>不过，<strong>在内存修改该 Undo 页面后，需要记录对应的 redo log</strong>。</p>
+<h4 id="redo-log-和-undo-log-区别在哪？"><a href="#redo-log-和-undo-log-区别在哪？" class="headerlink" title="redo log 和 undo log 区别在哪？"></a>redo log 和 undo log 区别在哪？</h4><p>这两种日志是属于 InnoDB 存储引擎的日志，它们的区别在于：</p>
+<ul>
+<li>redo log 记录了此次事务「<strong>完成后</strong>」的数据状态，记录的是更新<strong>之后</strong>的值；</li>
+<li>undo log 记录了此次事务「<strong>开始前</strong>」的数据状态，记录的是更新<strong>之前</strong>的值；</li>
+</ul>
+<p>事务提交之前发生了崩溃，重启后会通过 undo log 回滚事务，事务提交之后发生了崩溃，重启后会通过 redo log 恢复事务，如下图：</p>
+<p><img src="/post/6e6df8a7/%E4%BA%8B%E5%8A%A1%E6%81%A2%E5%A4%8D.png" alt="事务恢复"></p>
+<h2 id="查询优化器"><a href="#查询优化器" class="headerlink" title="查询优化器"></a>查询优化器</h2><h3 id="基于成本的优化算法"><a href="#基于成本的优化算法" class="headerlink" title="基于成本的优化算法"></a>基于成本的优化算法</h3><h4 id="什么是“成本”？"><a href="#什么是“成本”？" class="headerlink" title="什么是“成本”？"></a>什么是“成本”？</h4><p><img src="/post/6e6df8a7/image-20240615182457160.png" alt="image-20240615182457160"></p>
+<h4 id="单表查询的成本分析"><a href="#单表查询的成本分析" class="headerlink" title="单表查询的成本分析"></a>单表查询的成本分析</h4><p>• 一个查询成本由 I&#x2F;O 成本和 CPU 成本组成</p>
+<p>基本步骤如下：</p>
+<p>​	• 根据搜索条件，找出所有可能使用的索引</p>
+<p>​	• 计算全表扫描的代价</p>
+<p>​	• 计算使用不同索引执行查询的代价</p>
+<p>​	• 对吧各种执行方案的代价，找到成本最低的路径</p>
+<h4 id="两表连接的成本分析"><a href="#两表连接的成本分析" class="headerlink" title="两表连接的成本分析"></a>两表连接的成本分析</h4><p><img src="/post/6e6df8a7/image-20240615184747930.png" alt="image-20240615184747930"></p>
+<p>• <u>连接查询的总成本 &#x3D; 单词访问驱动表的成本 + 驱动表扇出值 * 单次被驱动表的成本</u></p>
+<p>• 不同驱动表的成本是不一样的，寻找成本最低的那个</p>
+<p>• <u>扇出值的计算是估算</u>，根据条件占比的估算*</p>
+<p>• 多表连接类似，只是可选路径是 N 的阶乘</p>
+<p>​	• 提前结束某种连接顺序的成本估计</p>
+<p>​	• 设置系统变量决定连接深度</p>
+<p>​	• 不考虑连接顺序，使用学习的启发式规则</p>
+<p>驱动表的扇出值是预测出来的：</p>
+<p>​	• 最优化表连接树勋</p>
+<p>​	• 为驱动表和被驱动表选择成本最低的访问方式</p>
+<h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><p><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1229597">一文带你了解MySQL之基于成本的优化-阿里云开发者社区 (aliyun.com)</a></p>
+<p>• 物理读取一个页面默认成本是 1.0</p>
+<p>• 逻辑读取和检测条件默认为 0.2</p>
+<p>• 红色的数值是微调值，固定常数</p>
+<p><img src="/post/6e6df8a7/image-20240615180811110.png" alt="image-20240615180811110"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="https://xiaolincoding.com/mysql/log/how_update.html#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-undo-log">MySQL 日志：undo log、redo log、binlog 有什么用？ | 小林coding (xiaolincoding.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2281012">MySQL查询为什么选择使用这个索引？——基于MySQL 8.0.22索引成本计算-腾讯云开发者社区-腾讯云 (tencent.com)</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://nuit-silencieuse.github.io">Nuit-Silencieuse</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://nuit-silencieuse.github.io/post/6e6df8a7.html">https://nuit-silencieuse.github.io/post/6e6df8a7.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/SQL/">SQL</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/e21f1cfa.html" title="SQL语法学习"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">SQL语法学习</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/post/e21f1cfa.html" title="SQL语法学习"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-05-24</div><div class="title">SQL语法学习</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Nuit-Silencieuse</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Nuit-Silencieuse" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:211294023@smail.nju.edu.cn" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">索引结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#B%E6%A0%91-B-%E6%A0%91"><span class="toc-number">1.1.</span> <span class="toc-text">B树 (B+树)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B%E6%A0%91%E7%9A%84%E8%8A%82%E7%82%B9%E5%88%86%E8%A3%82"><span class="toc-number">1.2.</span> <span class="toc-text">B树的节点分裂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B%E6%A0%91%E7%9A%84%E8%8A%82%E7%82%B9%E5%90%88%E5%B9%B6"><span class="toc-number">1.3.</span> <span class="toc-text">B树的节点合并</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E3%80%81%E5%88%86%E8%A1%A8%E3%80%81%E5%88%86%E5%BA%93"><span class="toc-number">2.</span> <span class="toc-text">分区、分表、分库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%A7%88"><span class="toc-number">2.1.</span> <span class="toc-text">概览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%8C%BA"><span class="toc-number">2.2.</span> <span class="toc-text">分区</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%80%83%E8%99%91%E4%BD%BF%E7%94%A8%E5%88%86%E5%8C%BA%EF%BC%9F"><span class="toc-number">2.2.1.</span> <span class="toc-text">什么时候考虑使用分区？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.2.2.</span> <span class="toc-text">分区解决的问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E8%A1%A8"><span class="toc-number">2.3.</span> <span class="toc-text">分表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E8%A1%A8%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.3.1.</span> <span class="toc-text">分表解决的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E5%92%8C%E5%88%86%E8%A1%A8%E7%9A%84%E5%8C%BA%E5%88%AB%E4%B8%8E%E8%81%94%E7%B3%BB"><span class="toc-number">2.3.2.</span> <span class="toc-text">分区和分表的区别与联系</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%BA%93"><span class="toc-number">2.4.</span> <span class="toc-text">分库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%80%83%E8%99%91%E4%BD%BF%E7%94%A8%E5%88%86%E5%BA%93%EF%BC%9F"><span class="toc-number">2.4.1.</span> <span class="toc-text">什么时候考虑使用分库？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%BA%93%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.4.2.</span> <span class="toc-text">分库解决的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9E%82%E7%9B%B4%E6%8B%86%E5%88%86"><span class="toc-number">2.4.3.</span> <span class="toc-text">垂直拆分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B0%B4%E5%B9%B3%E6%8B%86%E5%88%86"><span class="toc-number">2.4.4.</span> <span class="toc-text">水平拆分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB"><span class="toc-number">2.4.5.</span> <span class="toc-text">读写分离</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redo%E3%80%81Undo%E6%97%A5%E5%BF%97"><span class="toc-number">3.</span> <span class="toc-text">Redo、Undo日志</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Redo-log-Undo-log-%E6%A6%82%E8%A7%88"><span class="toc-number">3.1.</span> <span class="toc-text">Redo log &amp; Undo log 概览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Undo-log"><span class="toc-number">3.2.</span> <span class="toc-text">Undo log</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81Undo-log%EF%BC%9F"><span class="toc-number">3.2.1.</span> <span class="toc-text">为什么需要Undo log？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFUndo-log%EF%BC%9F"><span class="toc-number">3.2.2.</span> <span class="toc-text">什么是Undo log？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Undo-log%E6%80%8E%E4%B9%88%E5%81%9A"><span class="toc-number">3.2.3.</span> <span class="toc-text">Undo log怎么做?</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redo-log"><span class="toc-number">3.3.</span> <span class="toc-text">Redo log</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81Redo-log%EF%BC%9F"><span class="toc-number">3.3.1.</span> <span class="toc-text">为什么需要Redo log？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-Redo-log%EF%BC%9F"><span class="toc-number">3.3.2.</span> <span class="toc-text">什么是 Redo log？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redo-log-Undo-log-%E8%81%94%E7%B3%BB"><span class="toc-number">3.4.</span> <span class="toc-text">Redo log &amp; Undo log 联系</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-Undo-%E9%A1%B5%E9%9D%A2%EF%BC%8C%E9%9C%80%E8%A6%81%E8%AE%B0%E5%BD%95%E5%AF%B9%E5%BA%94-redo-log-%E5%90%97%EF%BC%9F"><span class="toc-number">3.4.1.</span> <span class="toc-text">修改 Undo 页面，需要记录对应 redo log 吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#redo-log-%E5%92%8C-undo-log-%E5%8C%BA%E5%88%AB%E5%9C%A8%E5%93%AA%EF%BC%9F"><span class="toc-number">3.4.2.</span> <span class="toc-text">redo log 和 undo log 区别在哪？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">查询优化器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%88%90%E6%9C%AC%E7%9A%84%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">基于成本的优化算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E2%80%9C%E6%88%90%E6%9C%AC%E2%80%9D%EF%BC%9F"><span class="toc-number">4.1.1.</span> <span class="toc-text">什么是“成本”？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E8%A1%A8%E6%9F%A5%E8%AF%A2%E7%9A%84%E6%88%90%E6%9C%AC%E5%88%86%E6%9E%90"><span class="toc-number">4.1.2.</span> <span class="toc-text">单表查询的成本分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%A4%E8%A1%A8%E8%BF%9E%E6%8E%A5%E7%9A%84%E6%88%90%E6%9C%AC%E5%88%86%E6%9E%90"><span class="toc-number">4.1.3.</span> <span class="toc-text">两表连接的成本分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98"><span class="toc-number">4.2.</span> <span class="toc-text">例题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">5.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/6e6df8a7.html" title="数据库开发 复习笔记"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库开发 复习笔记"/></a><div class="content"><a class="title" href="/post/6e6df8a7.html" title="数据库开发 复习笔记">数据库开发 复习笔记</a><time datetime="2024-06-14T14:57:30.000Z" title="Created 2024-06-14 22:57:30">2024-06-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/e21f1cfa.html" title="SQL语法学习"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SQL语法学习"/></a><div class="content"><a class="title" href="/post/e21f1cfa.html" title="SQL语法学习">SQL语法学习</a><time datetime="2024-05-23T17:21:42.000Z" title="Created 2024-05-24 01:21:42">2024-05-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/a1402875.html" title="操作系统实验与GDB调试"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="操作系统实验与GDB调试"/></a><div class="content"><a class="title" href="/post/a1402875.html" title="操作系统实验与GDB调试">操作系统实验与GDB调试</a><time datetime="2024-05-14T06:56:43.000Z" title="Created 2024-05-14 14:56:43">2024-05-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/75fd9a8d.html" title="ElasticSearch配置及使用静态同义词表进行模糊搜索"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ElasticSearch配置及使用静态同义词表进行模糊搜索"/></a><div class="content"><a class="title" href="/post/75fd9a8d.html" title="ElasticSearch配置及使用静态同义词表进行模糊搜索">ElasticSearch配置及使用静态同义词表进行模糊搜索</a><time datetime="2024-05-07T16:21:52.000Z" title="Created 2024-05-08 00:21:52">2024-05-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/7d2ef8bb.html" title="Hexo&amp;Github搭建个人博客网站"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hexo&amp;Github搭建个人博客网站"/></a><div class="content"><a class="title" href="/post/7d2ef8bb.html" title="Hexo&amp;Github搭建个人博客网站">Hexo&amp;Github搭建个人博客网站</a><time datetime="2024-05-05T11:06:40.000Z" title="Created 2024-05-05 19:06:40">2024-05-05</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Nuit-Silencieuse</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
