@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="zh-Hans" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>乐观锁和CAS简介 | Nuit's Blog</title><meta name="author" content="Nuit-Silencieuse"><meta name="copyright" content="Nuit-Silencieuse"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="乐观锁和CAS（Compare And Swap）简介乐观锁是一种并发控制策略，用于多线程环境下避免锁的竞争和性能瓶颈。它的核心思想是：在进行某个操作时，假设不会发生冲突（即乐观地认为其他线程不会同时修改数据）。如果在操作结束时发现数据发生了变化，则需要重试操作。这种方式与悲观锁不同，后者假设会发生冲突，因此在操作前会获取锁。 CAS (Compare And Swap) 是乐观锁的一种常见实现方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="乐观锁和CAS简介">
+<meta property="og:url" content="https://nuit-silencieuse.github.io/post/6fd67c1d.html">
+<meta property="og:site_name" content="Nuit&#39;s Blog">
+<meta property="og:description" content="乐观锁和CAS（Compare And Swap）简介乐观锁是一种并发控制策略，用于多线程环境下避免锁的竞争和性能瓶颈。它的核心思想是：在进行某个操作时，假设不会发生冲突（即乐观地认为其他线程不会同时修改数据）。如果在操作结束时发现数据发生了变化，则需要重试操作。这种方式与悲观锁不同，后者假设会发生冲突，因此在操作前会获取锁。 CAS (Compare And Swap) 是乐观锁的一种常见实现方">
+<meta property="og:locale">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2024-12-21T04:04:26.000Z">
+<meta property="article:modified_time" content="2024-12-21T06:35:32.896Z">
+<meta property="article:author" content="Nuit-Silencieuse">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://nuit-silencieuse.github.io/post/6fd67c1d.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '乐观锁和CAS简介',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-12-21 14:35:32'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">16</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">3</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Nuit's Blog"><span class="site-name">Nuit's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">乐观锁和CAS简介</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-12-21T04:04:26.000Z" title="Created 2024-12-21 12:04:26">2024-12-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-12-21T06:35:32.896Z" title="Updated 2024-12-21 14:35:32">2024-12-21</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="乐观锁和CAS简介"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="乐观锁和CAS（Compare-And-Swap）简介"><a href="#乐观锁和CAS（Compare-And-Swap）简介" class="headerlink" title="乐观锁和CAS（Compare And Swap）简介"></a>乐观锁和CAS（Compare And Swap）简介</h3><p><strong>乐观锁</strong>是一种并发控制策略，用于多线程环境下避免锁的竞争和性能瓶颈。它的核心思想是：在进行某个操作时，假设不会发生冲突（即乐观地认为其他线程不会同时修改数据）。如果在操作结束时发现数据发生了变化，则需要重试操作。这种方式与悲观锁不同，后者假设会发生冲突，因此在操作前会获取锁。</p>
+<p><strong>CAS (Compare And Swap)</strong> 是乐观锁的一种常见实现方式，它用于保证并发环境下数据的一致性。CAS 是一种无锁（lock-free）的原子操作，通过原子比较和交换的方式来实现并发控制。</p>
+<h3 id="CAS-的工作原理"><a href="#CAS-的工作原理" class="headerlink" title="CAS 的工作原理"></a>CAS 的工作原理</h3><p>CAS 操作会比较某个变量的当前值与期望值，如果两者相等，则将该变量更新为新的值。如果不相等，则不做任何操作。CAS 操作是原子的，因此能够保证多线程并发时的数据一致性。</p>
+<p>具体来说，CAS 操作包括三个参数：</p>
+<ul>
+<li><strong>内存地址（V）</strong>：要操作的变量地址。</li>
+<li><strong>期望值（A）</strong>：预期的当前值。</li>
+<li><strong>新值（B）</strong>：更新后的值。</li>
+</ul>
+<p>CAS 操作的步骤如下：</p>
+<ol>
+<li><p>读取当前内存地址的值，记为 <code>V</code>。</p>
+</li>
+<li><p>比较 <code>V</code> 和期望值 <code>A</code> 是否相等。</p>
+<ul>
+<li>如果相等，则将内存地址的值更新为 <code>B</code>。</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>如果不相等，则操作失败，不做任何修改。</li>
+</ul>
+<h3 id="CAS-的优缺点"><a href="#CAS-的优缺点" class="headerlink" title="CAS 的优缺点"></a>CAS 的优缺点</h3><p><strong>优点</strong>：</p>
+<ol>
+<li><strong>无锁</strong>：CAS 通过原子操作实现并发控制，不需要加锁，从而减少了性能开销。</li>
+<li><strong>高效</strong>：因为没有锁竞争，能够提高并发性能，尤其是在高并发场景下。</li>
+</ol>
+<p><strong>缺点</strong>：</p>
+<ol>
+<li><strong>ABA 问题</strong>：如果从内存位置 <code>V</code> 中取出某个变量的值为 <code>A</code>，先被修改为 <code>B</code>，然后再修改回 <code>A</code>，CAS 可能误判为没有变化，导致错误的更新。这个问题可以通过引入版本号或者其他机制来解决（如使用 <code>AtomicStampedReference</code> 或 <code>AtomicMarkableReference</code>）。</li>
+<li><strong>忙等（Spinlock）</strong>：CAS 操作可能会陷入一个反复失败的循环，导致大量的忙等，消耗 CPU 资源。</li>
+</ol>
+<h3 id="CAS-示例"><a href="#CAS-示例" class="headerlink" title="CAS 示例"></a>CAS 示例</h3><p>假设有一个共享的变量 <code>count</code>，我们希望在并发环境中安全地修改这个变量的值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CASExample</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">AtomicInteger</span> <span class="variable">count</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>(<span class="number">0</span>);  <span class="comment">// 使用原子变量</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 启动多个线程执行 CAS 操作</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">                <span class="type">int</span> expectedValue;</span><br><span class="line">                <span class="keyword">do</span> &#123;</span><br><span class="line">                    expectedValue = count.get();  <span class="comment">// 获取当前值</span></span><br><span class="line">                &#125; <span class="keyword">while</span> (!count.compareAndSet(expectedValue, expectedValue + <span class="number">1</span>));  <span class="comment">// CAS 比较并交换</span></span><br><span class="line">                System.out.println(<span class="string">&quot;Incremented count: &quot;</span> + count.get());</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h4><ul>
+<li><code>AtomicInteger</code> 是 Java 中提供的一个原子类，它支持无锁的原子操作。</li>
+<li><code>compareAndSet(expectedValue, newValue)</code> 是 CAS 操作的一部分。它会比较当前 <code>count</code> 的值与 <code>expectedValue</code>，如果相等，则将 <code>count</code> 设置为 <code>newValue</code>，并返回 <code>true</code>，表示操作成功。如果不相等，返回 <code>false</code>，表示操作失败。</li>
+<li>代码中的 <code>do-while</code> 循环会在 <code>compareAndSet</code> 返回 <code>false</code> 时重新尝试，直到成功为止。</li>
+</ul>
+<h4 id="解释-CAS-操作的细节"><a href="#解释-CAS-操作的细节" class="headerlink" title="解释 CAS 操作的细节"></a>解释 CAS 操作的细节</h4><ol>
+<li>初始时，<code>count</code> 为 0。</li>
+<li>每个线程会读取当前的 <code>count</code> 值（<code>expectedValue</code>），并将其加 1，然后尝试通过 CAS 将新的值写回 <code>count</code>。</li>
+<li>如果在一个线程读取值和更新值之间，其他线程修改了 <code>count</code>，那么当前线程的 <code>compareAndSet</code> 会失败，重新读取最新的 <code>count</code> 值并继续尝试更新。</li>
+</ol>
+<h3 id="CAS-的应用场景"><a href="#CAS-的应用场景" class="headerlink" title="CAS 的应用场景"></a>CAS 的应用场景</h3><ol>
+<li><strong>计数器</strong>：如上面的例子所示，CAS 适用于计数器的更新操作，多个线程可以并发地修改共享变量，避免了传统锁机制带来的性能开销。</li>
+<li><strong>无锁队列&#x2F;栈</strong>：CAS 被广泛用于实现无锁数据结构，如无锁链表、无锁栈、无锁队列等，这些数据结构能够在高并发环境中高效地工作。</li>
+<li><strong>优化原子操作</strong>：在一些多线程程序中，CAS 通过原子性保障了多线程间的数据一致性，避免了显式加锁的复杂性。</li>
+<li><strong>实现原子性操作</strong>：一些类库中，CAS 可能被用于确保某个操作的原子性，如 <code>AtomicInteger</code>、<code>AtomicReference</code>、<code>AtomicBoolean</code> 等。</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><strong>乐观锁</strong> 假设不会发生冲突，因此在更新数据前不加锁，只有当数据发生变化时才会重试。</li>
+<li><strong>CAS</strong> 是实现乐观锁的常用方式，通过原子操作确保在多线程环境下的安全更新，避免了加锁带来的性能损失。</li>
+<li>CAS 操作简单高效，但需要小心 <strong>ABA 问题</strong> 和可能出现的 <strong>忙等</strong>。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://nuit-silencieuse.github.io">Nuit-Silencieuse</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://nuit-silencieuse.github.io/post/6fd67c1d.html">https://nuit-silencieuse.github.io/post/6fd67c1d.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/eb54323d.html" title="Kafka 基础"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">Kafka 基础</div></div></a></div><div class="next-post pull-right"><a href="/post/cf2468e7.html" title="秒杀系统如何设计？"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">秒杀系统如何设计？</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Nuit-Silencieuse</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">16</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Nuit-Silencieuse" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:211294023@smail.nju.edu.cn" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%90%E8%A7%82%E9%94%81%E5%92%8CCAS%EF%BC%88Compare-And-Swap%EF%BC%89%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">乐观锁和CAS（Compare And Swap）简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CAS-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">CAS 的工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CAS-%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">CAS 的优缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CAS-%E7%A4%BA%E4%BE%8B"><span class="toc-number">4.</span> <span class="toc-text">CAS 示例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A"><span class="toc-number">4.1.</span> <span class="toc-text">解释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A-CAS-%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BB%86%E8%8A%82"><span class="toc-number">4.2.</span> <span class="toc-text">解释 CAS 操作的细节</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CAS-%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">5.</span> <span class="toc-text">CAS 的应用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/e27998fa.html" title="消息队列基础"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消息队列基础"/></a><div class="content"><a class="title" href="/post/e27998fa.html" title="消息队列基础">消息队列基础</a><time datetime="2025-02-21T14:29:46.000Z" title="Created 2025-02-21 22:29:46">2025-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/eb54323d.html" title="Kafka 基础"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Kafka 基础"/></a><div class="content"><a class="title" href="/post/eb54323d.html" title="Kafka 基础">Kafka 基础</a><time datetime="2025-02-21T11:52:43.000Z" title="Created 2025-02-21 19:52:43">2025-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/6fd67c1d.html" title="乐观锁和CAS简介"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="乐观锁和CAS简介"/></a><div class="content"><a class="title" href="/post/6fd67c1d.html" title="乐观锁和CAS简介">乐观锁和CAS简介</a><time datetime="2024-12-21T04:04:26.000Z" title="Created 2024-12-21 12:04:26">2024-12-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/cf2468e7.html" title="秒杀系统如何设计？"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="秒杀系统如何设计？"/></a><div class="content"><a class="title" href="/post/cf2468e7.html" title="秒杀系统如何设计？">秒杀系统如何设计？</a><time datetime="2024-08-15T16:16:23.000Z" title="Created 2024-08-16 00:16:23">2024-08-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/3dab6e03.html" title="微服务开发基础-以商城项目为例"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务开发基础-以商城项目为例"/></a><div class="content"><a class="title" href="/post/3dab6e03.html" title="微服务开发基础-以商城项目为例">微服务开发基础-以商城项目为例</a><time datetime="2024-08-14T07:42:55.000Z" title="Created 2024-08-14 15:42:55">2024-08-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By Nuit-Silencieuse</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
