@@ -1,0 +1,427 @@
+<!DOCTYPE html><html lang="zh-Hans" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Nuit's Blog | Nuit's Blog</title><meta name="author" content="Nuit-Silencieuse"><meta name="copyright" content="Nuit-Silencieuse"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1. Presto简介1.1 概览Presto是一种用于大数据的高性能分布式SQL查询引擎。Presto是Apache许可证下发布的社区驱动的开源软件。 Presto最初是Facebook为数据分析师设计和开发的，用于在Apache Hadoop中的大型数据仓库上运行交互式查询。在Presto诞生之前，Facebook的数据分析师依靠Apache Hive在他们PB级的数据仓库上运行SQL分析。H">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nuit&#39;s Blog">
+<meta property="og:url" content="https://nuit-silencieuse.github.io/post/0.html">
+<meta property="og:site_name" content="Nuit&#39;s Blog">
+<meta property="og:description" content="1. Presto简介1.1 概览Presto是一种用于大数据的高性能分布式SQL查询引擎。Presto是Apache许可证下发布的社区驱动的开源软件。 Presto最初是Facebook为数据分析师设计和开发的，用于在Apache Hadoop中的大型数据仓库上运行交互式查询。在Presto诞生之前，Facebook的数据分析师依靠Apache Hive在他们PB级的数据仓库上运行SQL分析。H">
+<meta property="og:locale">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2026-05-14T16:25:56.811Z">
+<meta property="article:modified_time" content="2026-05-15T06:50:38.578Z">
+<meta property="article:author" content="Nuit-Silencieuse">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://nuit-silencieuse.github.io/post/0.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Nuit\'s Blog',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-05-15 14:50:38'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">20</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">3</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Nuit's Blog"><span class="site-name">Nuit's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Untitled</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2026-05-14T16:25:56.811Z" title="Created 2026-05-15 00:25:56">2026-05-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-05-15T06:50:38.578Z" title="Updated 2026-05-15 14:50:38">2026-05-15</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="1-Presto简介"><a href="#1-Presto简介" class="headerlink" title="1. Presto简介"></a>1. Presto简介</h1><h2 id="1-1-概览"><a href="#1-1-概览" class="headerlink" title="1.1 概览"></a>1.1 概览</h2><p><strong>Presto</strong>是一种用于大数据的高性能分布式SQL查询引擎。Presto是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Apache%E8%AE%B8%E5%8F%AF%E8%AF%81">Apache许可证</a>下发布的社区驱动的开源软件。</p>
+<p>Presto最初是Facebook为数据分析师设计和开发的，用于在Apache Hadoop中的大型数据仓库上运行交互式查询。在Presto诞生之前，Facebook的数据分析师依靠Apache Hive在他们PB级的数据仓库上运行SQL分析。Hive不适合Facebook的规模，而Presto是为了填补快速查询这块的差距而发明的。最初的开发始于2012年，并于当年晚些时候部署在Facebook上。2013年11月，Facebook宣布将其开源。[^2]</p>
+<p>Presto 旨在处理数据仓库和分析任务：数据分析、聚合大量数据以及生成报告。这些工作负载通常被归类为在线分析处理（OLAP）。[^1]</p>
+<h2 id="1-2-相关概念"><a href="#1-2-相关概念" class="headerlink" title="1.2 相关概念"></a>1.2 相关概念</h2><p>以下内容大部分引用自官方文档，并翻译为中文。[^5]</p>
+<h3 id="1-2-1-Server-Types"><a href="#1-2-1-Server-Types" class="headerlink" title="1.2.1 Server Types"></a>1.2.1 Server Types</h3><p>Presto 服务器有三种类型：Resource Manager、Coordinator、Worker。以下部分将解释它们之间的区别。</p>
+<p>Resource Manager：聚合所有Coordinator和Worker数据并构建集群全局视图的服务器。采用分离式Coordinator的 Presto 安装需要一个Resource Manager。集群支持多个Resource Manager，每个Resource Manager均作为主节点运行。</p>
+<p>Coordinator和Worker通过 Thrift API 与Resource Manager通信。</p>
+<h4 id="Coordinator"><a href="#Coordinator" class="headerlink" title="Coordinator"></a>Coordinator</h4><p>Coordinator：负责接收SQL Query，解析SQL，生成和优化执行计划，生成和调度Task到Worker上。Coordinator将一个完整的Query，拆分成了多个Stage，每个Stage拆分出多个可以并行的Task。[^6]</p>
+<h4 id="Worker"><a href="#Worker" class="headerlink" title="Worker"></a>Worker</h4><p>Worker：负责执行Coordinator发给它的Task，有部分Task负责到外部存储系统拉取数据，这部分Task会先执行，之后再执行那些负责计算的Task。从上图中可以看到，拉取数据的Task是在右侧两个Worker上执行的，负责计算的Task是在左侧一个Worker上执行的。[^6]</p>
+<h3 id="1-2-2-Data-Sources-10"><a href="#1-2-2-Data-Sources-10" class="headerlink" title="1.2.2 Data Sources[^ 10]"></a>1.2.2 Data Sources[^ 10]</h3><p>Catalog、schema，table是Presto提供的三级数据管理结构。catalog对应连接器，schema对应一个数据源中的数据库，table对应数据库中的表。</p>
+<p>Presto 集群使用基于连接器的架构来处理所有的查询。每个catalog配置使用一个连接器访问一个特定的数据源。数据源在catalog中暴露一个或者多个schema。每个schema包含若干个table(表)，表中的每一行就是多列数据，每一列是不同的类型。</p>
+<h3 id="1-2-3-Query-execution-model"><a href="#1-2-3-Query-execution-model" class="headerlink" title="1.2.3 Query-execution-model"></a>1.2.3 <a target="_blank" rel="noopener" href="https://prestodb.io/docs/current/overview/concepts.html#query-execution-model">Query-execution-model</a></h3><h4 id="Statement"><a href="#Statement" class="headerlink" title="Statement"></a>Statement</h4><p>Presto 执行符合 ANSI 标准的 SQL 语句。当 Presto 文档中提到Statement时，指的是 ANSI SQL 标准中定义的语句。在 Presto 中，语句仅指 SQL 语句的文本表示。当执行一个语句时，Presto 会创建一个查询以及一个查询计划，然后将其分发到一系列 Presto 工作节点上。</p>
+<h4 id="Query"><a href="#Query" class="headerlink" title="Query"></a>Query</h4><p>当 Presto 解析一条语句时，会将其转换为一个查询，并创建一个分布式查询计划，该计划随后在 Presto 工作节点上作为一系列相互连接的阶段执行。</p>
+<p>语句（statement）与查询（query）之间的区别很简单。语句可以理解为传递给 Presto 的 SQL 文本，而查询则指为执行该语句而实例化的配置和组件。查询包含stages, tasks, splits, connectors以及其他协同工作的组件和数据源，共同生成结果。</p>
+<h4 id="Query-Plan"><a href="#Query-Plan" class="headerlink" title="Query Plan"></a>Query Plan</h4><p>Query Plan以节点树的形式表示，每个节点大致代表一个operator。由于不同查询计划的性能表现可能不同，Presto 使用查询优化器来选择高效的计划。</p>
+<p>优化分为两个阶段：逻辑优化和物理优化。逻辑优化阶段仅基于算法复杂度对计划进行转换。经过逻辑优化的查询计划随后被转换为物理查询计划，该计划针对分布式执行进行了优化，并包含诸如应处理查询计划节点的 Presto 服务器的数量和类型，以及数据如何在它们之间交换等细节。</p>
+<h4 id="Plan-Fragment"><a href="#Plan-Fragment" class="headerlink" title="Plan Fragment"></a>Plan Fragment</h4><p>Plan Fragment是由不同 Presto 服务器上的任务执行的物理查询计划的一部分。</p>
+<h4 id="Stage"><a href="#Stage" class="headerlink" title="Stage"></a>Stage</h4><p>当 Presto 执行查询时，会将执行过程分解为一个stage层次结构。例如，如果 Presto 需要聚合存储在 Hive 中的十亿行数据，它会创建一个root stage来聚合多个其他stages的输出，而所有这些stages都旨在实现分布式查询计划的不同部分。</p>
+<p>构成查询的stage层级类似于一棵树。每个查询都有一个root stage，负责聚合来自其他stages的输出。stage是Coordinator用来建模分布式查询计划的结构，但stage本身并不会在 Presto 工作节点上运行。</p>
+<h4 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h4><p>如前一节所述，阶段（stage）用于表示分布式查询计划的特定部分，但stage本身并不会在 Presto 工作节点上执行。要理解stage是如何执行的，你需要了解stage实际上是通过一系列task实现的，这些task分布在 Presto 工作节点的网络中。</p>
+<p>任务是 Presto 架构中的“工作核心”。一个分布式查询计划会被分解为一系列阶段，这些阶段再被转换为任务，进而对数据分片进行操作或处理。</p>
+<h4 id="Split"><a href="#Split" class="headerlink" title="Split"></a>Split</h4><p>Split是并行执行时最小的调度单元。</p>
+<p>当 Presto 调度查询时，Coordinator会向连接器查询表可用的所有Split列表。Coordinator会跟踪哪些机器正在运行哪些任务，以及哪些任务正在处理哪些Split。</p>
+<p>split描述从底层读取和处理的一段数据，split是任务分配的单元。连接器能够做的操作依赖于底层的数据源。</p>
+<p>例如，hive连接器用以下信息描述split：文件的路径、所取数据的offset、length。[^10]</p>
+<h4 id="Driver"><a href="#Driver" class="headerlink" title="Driver"></a>Driver</h4><p>任务包含一个或多个并行的Driver。Driver处理数据，并将operator组合起来生成输出，然后由任务聚合，并传递给另一stage的另一个任务。Driver是一系列operator实例的集合。可以将Driver理解为内存中一组物理的operator。它是 Presto 架构中最低级别的并行单元。每个Driver有一个输入和一个输出。</p>
+<h3 id="1-2-4-其他概念"><a href="#1-2-4-其他概念" class="headerlink" title="1.2.4 其他概念"></a>1.2.4 其他概念</h3><p>以下资料大部分来自于ChatGPT。因为需要快速理解大量基础概念，在此仅作简要介绍用，可能含义上有所偏差和错误。</p>
+<p><strong>pipeline（operator pipeline）</strong>：一连串算子（operators）在同一执行线程或同一任务内顺序执行的处理流，pipeline 内部可通过多线程并行化来提升吞吐。</p>
+<p><strong>shuffle &#x2F; buffered in-memory data transfers（带缓冲的内存数据传输）</strong>：为了按 key 将数据从一个 stage 的 tasks 重分布到另一个 stage 的 tasks，引擎会进行 shuffle。shuffle 涉及数据序列化、网络传输、内存缓冲与键重分布，是分布式查询中代价最高的操作之一。</p>
+<p><strong>Data Layout Properties（数据布局属性）</strong>：指 connector 或节点暴露的关于数据输出的物理特性（例如已经按某列 partitioned 或标为索引），优化器利用这些属性来减少或避免 shuffle。</p>
+<p><strong>Data Layouts &#x2F; connector Data Layout API</strong>：由数据源连接器（connector）暴露给引擎的物理数据组织信息接口，例如文件位置（locations）、partitioning、sorting、grouping、indices 等。优化器利用这些物理信息选择更少数据移动或更快访问的计划。</p>
+<p><strong>Node Properties（节点属性）</strong>：plan 中节点可声明其输出的物理特性（partitioning、sorting、bucketing、grouping），并能声明对下游的 required 或 preferred properties，供优化器在插入 shuffle 时作决策。</p>
+<p><strong>required properties &#x2F; preferred properties</strong>：required properties 为必须满足的物理属性（例如某个算子要求数据按某键 partition），preferred properties 为优化器优先满足但非强制的属性。优化器在插入或调整 shuffle 时会尝试满足这些属性。</p>
+<p><strong>partition skew（分区倾斜）</strong>：数据按分区键分布不均，导致部分节点承载大量数据&#x2F;计算，其他节点空闲，形成瓶颈与负载不均，从而降低并行效率。</p>
+<p><strong>Intra-node Parallelism（节点内并行）</strong>：在单一物理节点（worker）内通过多线程并行执行计算以提高利用率，能共享内存状态（如哈希表）并减少网络开销。</p>
+<p><strong>join strategy selection</strong>：在多种 join 算法（例如 hash join、broadcast（replicated）join、index nested loop join 等）之间选择最合适的一种，依据数据大小、选择性、是否有索引与网络成本等因素。</p>
+<p><strong>join re-ordering</strong>：改变多表 join 的执行顺序（join order），因为不同顺序会产生不同中间结果大小，严重影响成本。优化器会尝试选择更优的 join 顺序。</p>
+<h1 id="2-查询执行模型——以表连接为例"><a href="#2-查询执行模型——以表连接为例" class="headerlink" title="2. 查询执行模型——以表连接为例"></a>2. 查询执行模型——以表连接为例</h1><h2 id="2-1-概览"><a href="#2-1-概览" class="headerlink" title="2.1 概览"></a>2.1 概览</h2><p>本章部分内容与插图来自于Facebook官方发表的论文《Presto: SQL on Everything》[^7]，以及翻译自书籍《Presto: the definitive guide》Presto权威指南 第四章的博客 [^10]。</p>
+<p><img src="/post/0/image-20250902154043249.png" alt="image-20250902154043249"></p>
+<p>上图中是一个四节点的Presto集群架构，在这个例子中有两种角色的节点：1个Coordinator和3个Worker。</p>
+<p>coordinator使用metadata SPI接口来获取表、列、类型的信息。这些信息用于校验Query的语义是否正确，执行语句的类型检查、安全检查。</p>
+<p>Data Location的SPI接口在创建分布式执行计划的过程中被用到。这些信息用来生成表的逻辑上的split。split是并行执行时最小的调度单元。</p>
+<p>下面来看一个包含表连接的SQL例子，以此来说明其Presto的查询执行模型。</p>
+<h2 id="2-2-逻辑查询计划"><a href="#2-2-逻辑查询计划" class="headerlink" title="2.2 逻辑查询计划"></a>2.2 逻辑查询计划</h2><p>首先我们深入一步探索一下coordinator内部发生了什么事情。当一个SQL语句提交给coordinator的时候，是普通的文本模式。coordinator接收文本，解析并且分析这段文本。然后它创建出一个执行计划。这个工作有是图4-6所描述的。查询执行计划从通常意义上概括了处理数据和返回结果的步骤。</p>
+<p><img src="/post/0/format3.png" alt="image.png"></p>
+<p><img src="/post/0/image-20250902155104584.png" alt="image-20250902155104584"></p>
+<h2 id="2-3-分布式查询计划"><a href="#2-3-分布式查询计划" class="headerlink" title="2.3 分布式查询计划"></a>2.3 分布式查询计划</h2><p>分布式的执行计划扩展了简单查询计划，包含了一个或者多个stage(阶段)。 简单查询计划会分割成计划段。一个stage描述的就是一个计划段(fragment)在执行时刻，包含了stage的计划段中所有的任务。</p>
+<p>coordinator分割开整个plan，从而有效的利用集群的并行度加速整体查询的速度。由于有多个stage，导致会出现一个依赖树。stage的个数取决于查询的复杂度。</p>
+<p><img src="/post/0/format2.png" alt="image.png"></p>
+<p><img src="/post/0/image-20250902155634836.png" alt="image-20250902155634836"></p>
+<h2 id="2-4-Task分配"><a href="#2-4-Task分配" class="headerlink" title="2.4 Task分配"></a>2.4 Task分配</h2><p>分布式查询计划定义了定义了stage，以及在Presto集群中执行query的方法。coordinator用它来做进一步的规划、调度task到worker节点上。 一个stage包含了一个或多个task。典型的，会引入很多task，每个task处理一小片数据。</p>
+<p><img src="/post/0/format.png" alt="image.png"></p>
+<h2 id="2-5-执行过程"><a href="#2-5-执行过程" class="headerlink" title="2.5 执行过程"></a>2.5 执行过程</h2><p>数据源阶段的task以page（页）这种格式生成数据。page是以列式格式存储的多行数据集合。page数据通过stage的依赖关系，流向下游的stage。 不同的stage之间通过exchange运算交换数据，这种Operator从上游的stage中读取数据。</p>
+<p>source task使用数据源的SPI来从底层的数据源中获取数据，数据以page的形式流向Presto，流过整个引擎。各个Operator根据自己的语义处理和产生数据。例如filterOperator丢掉一些数据，project运算发产生新的列数据。task内部的Operator之间的顺序成为流水线。流水线上最后一个Operator把他的输出放到ouptut缓存区。下游的exchange Operator从这个缓冲区获取数据。不同worker之间的Operator是并行执行的。</p>
+<p><img src="/post/0/forma4.png" alt="img"></p>
+<p>所以，task就是计划段（plan fragment）分配给worker运行时的称呼。当一个task创建出来后，它为每一个split初始化一个driver。每个driver初始化一个流水线的operator，然后处理一个split的数据。一个task可能会使用多个driver，取决于Presto的配置。一旦所有的driver都完成了，数据被传递到了下一层split，driver和任务结束了他们的工作，之后被销毁。</p>
+<p><img src="/post/0/format5.png" alt="image.png"></p>
+<p><img src="/post/0/image-20250902162426038.png" alt="image-20250902162426038"></p>
+<h1 id="3-Hash-Join算法背景"><a href="#3-Hash-Join算法背景" class="headerlink" title="3. Hash Join算法背景"></a>3. Hash Join算法背景</h1><h2 id="3-1-核心概念"><a href="#3-1-核心概念" class="headerlink" title="3.1 核心概念"></a>3.1 核心概念</h2><p><strong>Build &#x2F; Probe 模型</strong>[^8]</p>
+<p> Hash Join 以「一侧先构建哈希表（Build side），另一侧遍历并查找（Probe side）」为基本模型。构建侧会把要匹配的列内容组织成哈希索引；探测侧对每一行计算 key 的哈希并在哈希表中查找匹配。该思想是 Presto&#x2F;Trino 默认的连接实现基础。</p>
+<p><strong>分布式 Join 的分发策略（Join Distribution Selection）</strong>[^8]</p>
+<p> 在分布式环境下有两种常用策略，可以由join_distribution_type参数配置：</p>
+<ul>
+<li><strong>PARTITIONED（hash-partitioned）</strong>：按 join key 的哈希对左右表都做重分片（Shuffle），使得任意一对可能匹配的行落在同一 worker 上；适用于两边都较大、需要并行处理的情形。</li>
+<li><strong>BROADCAST（replicated）</strong>：把小表广播到保存左表数据的 worker 上，避免大规模 shuffle，适合右表远小于左表的场景。</li>
+</ul>
+<p><strong>底层数据结构（Pages／PagesIndex／PagesHash／LookupSource）</strong><br> Presto&#x2F;Trino 采用基于“Page”（一批行的内存页）处理的向量化流程：Build 侧的数据被组织为 <code>PagesIndex</code> &#x2F; <code>PagesHash</code>（或相应的 LookupSource 实现），提供按 key 快速定位匹配行的位置集合（position list），并支持批量 probe 操作以提高吞吐。</p>
+<p><strong>溢写（Spilling）与恢复</strong><br> 当 Build 哈希表或相关内存超出阈值时，系统会把部分分区或页写到磁盘（spill），后续以分区为单位恢复并完成 join（即“先溢写再分区回放”）。Spill 实现与恢复流程对理解大表 join 的行为至关重要。</p>
+<p><strong>动态过滤（Dynamic Filtering）</strong>[^9]<br> 在某些 join（尤其是高度选择性的 inner join）中，可以在运行时把 Build（通常为 dimension &#x2F; 右表）发现的 key 值集合下发为对 Probe（左表）扫描的动态谓词，从而显著减少需要探测的行数。</p>
+<p><strong>Join 类型与 NULL／多对多逻辑</strong></p>
+<ul>
+<li>对于 <strong>inner join</strong>：只输出匹配对。</li>
+<li><strong>left&#x2F;right&#x2F;full outer</strong> 需要记录未匹配的行并在末尾补齐 NULL。实现上通常在 Probe 阶段或后处理阶段对未命中的 Build 行做标记或第二次扫描。</li>
+<li>对于 <strong>semi&#x2F;anti join</strong>，Probe 逻辑只关心“是否存在匹配”，而非所有匹配行的列合并。<br> 正确处理 NULL、复杂类型（数组&#x2F;struct）以及相等比较规则（equals&#x2F;hash）是实现细节中的难点。</li>
+</ul>
+<h2 id="3-2-数据模型"><a href="#3-2-数据模型" class="headerlink" title="3.2 数据模型"></a>3.2 数据模型</h2><p>Presto中处理的最小数据单元是一个Page对象，Page对象的数据结构如下图所示。一个Page对象包含多个Block对象，每个Block对象是一个字节数组，存储一个字段的若干行。多个Block横切的一行是真实的一行数据。一个Page最大1MB，最多16*1024行数据。[^3]</p>
+<p><img src="/post/0/6030592a.png" alt="数据模型"></p>
+<p>以下的数据类型介绍引用自这篇博客[^11]。</p>
+<h3 id="3-2-1-Slice"><a href="#3-2-1-Slice" class="headerlink" title="3.2.1 Slice"></a>3.2.1 Slice</h3><p>从用户的角度来看，Slice 是一个对开发人员更友好的虚拟内存，它定义了一组 getter 和 setter 方法。</p>
+<p>Slice 常用来表示一个字符串：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// use it as utf8 encoded string</span></span><br><span class="line"><span class="type">Slice</span> <span class="variable">slice</span> <span class="operator">=</span> Slices.utf8Slice(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="type">Slice</span> <span class="variable">subSlice</span> <span class="operator">=</span> SliceUtf8.substring(slice, <span class="number">1</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+
+<p>我们可以像使用字符串一样使用 Slice，Presto 为什么选择 Slice 而不是 String：</p>
+<ul>
+<li>字符串创建代价昂贵（字符串拼接，StringBuilder等）。</li>
+<li>Slice 是可变的，而 String 是不可变的，因此当我们需要进行字符串计算时，效率更高。</li>
+<li>字符串在内存中编码为 UTF16，而 Slice 使用 UTF8，这样可以提高内存效率。UTF16 最少使用两个字节来表示一个字符，而 UTF8 最少使用一个字节，因此，如果 String 内容主要是 ASCII 字符，则 UTF8 可以节省大量内存。</li>
+</ul>
+<p>Slice（在 Presto 中）的另一种用法是表示原始字节（SQL中的 VARBINARY 类型）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// use it as raw bytes</span></span><br><span class="line">block.getSlice().getBytes()</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-2-Block"><a href="#3-2-2-Block" class="headerlink" title="3.2.2 Block"></a>3.2.2 Block</h3><p>Block的类注释如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 一个块（Block）将 positionCount 个值打包到一块内存中。值的打包方式、是否使用压缩、字节序以及其他实现细节由各个子类决定。</span><br><span class="line"> * 但从 API 的角度来看，你可以将一个 Block 视为一个从零开始索引的值序列，</span><br><span class="line"> * 可以通过调用本接口中的 getter 方法来读取这些值。例如，</span><br><span class="line"> * 你可以通过调用</span><br><span class="line"> * block.getByte(0), block.getByte(1), ... block.getByte(positionCount - 1)</span><br><span class="line"> * 来读取 positionCount 个字节。你可以通过调用</span><br><span class="line"> * block.getLong(0), block.getLong(1), ... block.getLong(positionCount - 1)</span><br><span class="line"> * 来读取 positionCount 个长整型数值。当然，如果向某个位置写入一种类型，却读取了另一种类型，</span><br><span class="line"> * 返回的值可能并不总是具有实际意义。</span><br><span class="line">* 如果尝试从一个块中读取错误的类型，许多子类将抛出 UnsupportedOperationException。</span><br><span class="line">* 通常由读取方负责明确每个块中应当读取的数据类型。</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+
+<p>由于 Page 由 Block 组成，因此我们首先介绍 Block。Block 可以认为是同一类数据（int，long，Slice等）的数组。每个数据项都有一个 <code>position</code>，总位置个数代表 Block 中数据的总行数（Block 仅保存这些行中的一列）</p>
+<h3 id="3-2-3-Page"><a href="#3-2-3-Page" class="headerlink" title="3.2.3 Page"></a>3.2.3 Page</h3><p>Page的类注释如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">* 用于存储小型表的数据结构，该表包含 positionCount 行（row也称为tuples）</span><br><span class="line">* 和 channelCount 列（column也称为fields）。</span><br><span class="line">* 行和列的索引分别从 0 到 positionCount-1 和 0 到 channelCount-1。</span><br><span class="line">* 一个页面由多个块组成，每列对应一个块。页面中的每个块应包含 positionCount 个值。</span><br></pre></td></tr></table></figure>
+
+<p>Page 由不同的 Block 组成:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Page</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Block[] blocks;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> positionCount;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>除 Block 外，Page 还有另一个称为 Channel 的概念：每个 Block 都是该 Page 的 Channel，Block 的总数就是 Channel 数。因此，让我们在这里总结一下数据是如何结构化的，当要发送一些行时，Presto 将:</p>
+<ul>
+<li>将每一列放入单独的 Block 中。</li>
+<li>将这些 Block 放入一个 Page 中。</li>
+<li>发送 Page。</li>
+</ul>
+<p>Page 是保存数据并在 Presto 物理执行算子之间传输的数据结构：上游算子通过 getOutput() 产生输出：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Gets an output page from the operator.  If no output data is currently</span></span><br><span class="line"><span class="comment"> * available, return null.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">Page <span class="title function_">getOutput</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+
+<p>下游算子通过 addInput() 方法获取输入：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Adds an input page to the operator.  This method will only be called if</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@code</span> needsInput()&#125; returns true.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">addInput</span><span class="params">(Page page)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>就像 Block 一样，Page 也需要序列化和反序列化，序列化发生在工作进程之间传输数据时。Page 进行序列化时，首先使用相应的 BlockEncoding 对 Block 进行编码。如果有压缩器，将尝试对编码的块数据进行压缩，如果压缩效果良好（编码率低于0.8），将使用压缩数据，否则使用未压缩的数据。编码后的块数据将与一些统计信息(压缩前后页面的字节大小)一起放入名为 SerializedPage 的类中。</p>
+<h1 id="4-Hash-Join算法概述"><a href="#4-Hash-Join算法概述" class="headerlink" title="4. Hash Join算法概述"></a>4. Hash Join算法概述</h1><p>本章内容引用自这两篇博客。[^12][^13]</p>
+<h2 id="4-1-Join语句"><a href="#4-1-Join语句" class="headerlink" title="4.1 Join语句"></a>4.1 Join语句</h2><p>看下边的tpcds表相关的join查询语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>)</span><br><span class="line"><span class="keyword">FROM</span> store_sales ss</span><br><span class="line">	<span class="keyword">INNER</span> <span class="keyword">JOIN</span> date_dim dd <span class="keyword">ON</span> ss.ss_sold_date_sk <span class="operator">=</span> dd.d_date_sk</span><br></pre></td></tr></table></figure>
+
+
+<p>其中的store_sales是一个比较大的表，总行数为2880404，date_dim较小，总行数为73049，两个表在商品销售时间上进行连接，最后对连接后的结果进行count聚合汇总。</p>
+<h2 id="4-2-执行计划总览"><a href="#4-2-执行计划总览" class="headerlink" title="4.2 执行计划总览"></a>4.2 执行计划总览</h2><p><img src="/post/0/v2-897292b2abc5709544ed0d47e4534751_1440w.jpg" alt="img"></p>
+<p>从上图的执行计划可以看出，整个join的执行过程分为4个stage(stage的划分规则可以参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/58959725">Presto 是如何 schedule task 的</a>)：</p>
+<ul>
+<li>Stage3的Input有73.0K，所以Stage3是对datedim表的读取和分发；</li>
+<li>Stage2的Input有2.88M，所以Stage2处理是对store_sales表的读取和分发；</li>
+<li>Stage1有一个<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=100291214&content_type=Article&match_order=1&q=JoinNode&zhida_source=entity">JoinNode</a>，所以Stage1是真正进行join执行的stage，并且在join之后可以进行partial agg (agg的实现可以参考前文：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54385845">Presto中的分组聚合查询流程</a>)</li>
+<li>Stage0执行final agg，并进行结果的输出</li>
+</ul>
+<p>一个最简单的Join必然也会涉及到两张表，所以上述执行计划中Join的数据源有两个，其中一个来自于Stage3对date_dim表的处理结果，另外一个来自于Stage2对store_sales表的处理结果，而从执行计划可以看出，例子中的join语句的Stage1是join发生的stage，也是本文重点要讲解的Stage</p>
+<h2 id="4-3-Join相关的Stage"><a href="#4-3-Join相关的Stage" class="headerlink" title="4.3 Join相关的Stage"></a>4.3 Join相关的Stage</h2><h3 id="4-3-1-Stage-Performance"><a href="#4-3-1-Stage-Performance" class="headerlink" title="4.3.1 Stage Performance"></a>4.3.1 Stage Performance</h3><p>要了解在执行阶段Stage1发生了什么，就需要知道在Stage1有哪些Presto中的基本算子参与其中，点击执行信息页面的”Stage performance”，选择stage1，我们可以看到stage1相关的operator：</p>
+<p><img src="/post/0/v2-55d6ee1512765f5259963a511bdbf494_1440w.jpg" alt="img"></p>
+<p>可以看出在执行阶段，这个stage被划分为了3条pipeline，一条pipeline就是一组可以以流水线方式running起来的一组算子，也就是说如果一个pipeline的上游算子(pipeline下方位置)只要有计算结果输出(通常是一个page)，那么其下游算子(pipeline上方位置)可以对这个page进行消费，假设上游算子输出了page1，那么当其还在生成page2时，并不会阻塞下游算子对page1的处理，有点类似于SparkStreaming中的micro batch的流式处理方式。但是如果不是在同一个pipeline中的算子，则不能进行这样的流式作业，这就引出了HashJoin相关的处理逻辑。</p>
+<p>Presto的HashJoin中相关的两张表，用来构建HashMap(Presto自己实现的HashMap，在hash值冲突时使用codegen来保障高效的比较，value的存储使用address)的表称为<strong>build表</strong>；而另外一张表的行会进行遍历，依次在build表的HashMap中进行探测(匹配)，所以这个表一般称为<strong>probe表</strong>。</p>
+<p>因为build表的数据要通过HashMap存储在内存中，保证较低的查找复杂度，为了降低内存开销，build表一般选择为小表，例如上边的date_dim表；probe表则没有内存占用的顾虑，可以从文件中一行一行或者一批一批读出来进行遍历，所以probe表一般选择为大表，例如上边的store_sales表。</p>
+<h3 id="4-3-2-对build表的拉取和repartition"><a href="#4-3-2-对build表的拉取和repartition" class="headerlink" title="4.3.2 对build表的拉取和repartition"></a>4.3.2 对build表的拉取和repartition</h3><p>先看图中的pipeline0，其中的ExchangeOperator是一个从远端进行数据读取的算子，其输入是73k，可见是对stage3输出的date_dim表的读取算子，为了加速HashJoin的执行过程，在把date_dim表读取到本地后，会对这个表进行一个打散操作，其原理和通过网络的repartition类似，是一个本地的repartition过程，入下图所示：</p>
+<p><img src="/post/0/v2-cd17ff1ea32e6700f7e486d05c55b2a8_r.jpg" alt="img"></p>
+<p><img src="/post/0/v2-069f09ece76f6216f810677a72d02928_r.jpg" alt="img"></p>
+<p>LocalExchangerSinckOperator在接收到Exchanger从网络接收到的一个page后，会对这个page的数据进行本地的repartition。LocalExchangeSinkOperator和LocalExchangeSourceOperator对应的逻辑执行计划的ExchangeNode。</p>
+<p>数据进入HashBuilderOperator之前已经由LocalExchangeSinkOperator和LocalExchangeSourceOperator完成数据partition，即join key的哈希值相同的数据进入同一个HashBuilderOperator。</p>
+<h3 id="4-3-3-使用HashBuilderOperator构建HashMap"><a href="#4-3-3-使用HashBuilderOperator构建HashMap" class="headerlink" title="4.3.3 使用HashBuilderOperator构建HashMap"></a>4.3.3 使用HashBuilderOperator构建HashMap</h3><p>这个算子是Hash join的一个非常关键的算子，关于该算子需要特别说明的几点是：</p>
+<ul>
+<li>该算子会在内存积攒数据</li>
+</ul>
+<p>Presto这种MPP架构以流式处理数据著称，但是当遇到HashJoin时，则不得不进行数据的积攒，而HashBuilderOperator就是一个会不断积攒Page的算子。</p>
+<ul>
+<li>会阻塞Probe端算子</li>
+</ul>
+<p>由于需要构建完整的hash表后才能开始进行真正的join，因为如果HashMap没有构建完成就去查找，会有数据遗漏的问题，所以在hash表构造完成之后，probe端的算子(LookupJoinOperator)才能开始进行数据处理。</p>
+<h4 id="PageHash"><a href="#PageHash" class="headerlink" title="PageHash"></a><em>PageHash</em></h4><p>在PageHash中几个比较重要的数据结构key、addresses以及positionLinks，这三个数据结构相互关联，要解释清楚这三个数据结构在join时的作用，首先需要了解join的目的：hashjoin时，不管是哪种join类型(inner&#x2F;outer&#x2F;semi)，都需要判断一个表中的某个值(特指join key)是否在另外一个表中存在，比较快速的方法就是使用hash来判断，这就需要用到key这个数据结构，但是，当我们发现key值相等值时，我们还需要做两类处理，第一是是否真的原始值就相等，如果原始值不等，那么说明hash冲突了，而要判断原始值是否相等，就是需要借助addresses来从积攒的一大堆数据中读取出原始值来判断；另外一个处理是原始值真的就相等了，那么就需要一个地方来存储这些相等的原始值在那一大推数据中的位置(就是address)，以便在inner join时把这些相等的值快速的找到并读出来，这就需要使用到positionLinks这个数组了。</p>
+<h2 id="4-4-Hash-Join实现方式"><a href="#4-4-Hash-Join实现方式" class="headerlink" title="4.4 Hash Join实现方式"></a>4.4 Hash Join实现方式</h2><h3 id="4-4-1-Hash-Join类图"><a href="#4-4-1-Hash-Join类图" class="headerlink" title="4.4.1 Hash Join类图"></a>4.4.1 Hash Join类图</h3><p><img src="/post/0/v2-537e5c273cb7acf8724fab3a9cd59243_1440w.jpg" alt="img"></p>
+<p>上图展示了Hash Join所涉及的类图，其中比较重要的类有以下几个：</p>
+<p>1） HashBuilderOperatorFactory&#x2F;HashBuilderOperator，针对build表构建Hash Table；</p>
+<p>2） JoinHash，Hash Table承载类；</p>
+<p>3） LookupJoinOperatorFactory&#x2F;LookupJoinOperator，负责probe表逐行探测；</p>
+<p>4） LookupJoinPageBuilder，负责构建输出page。</p>
+<h3 id="4-4-2-Hash-Table构建"><a href="#4-4-2-Hash-Table构建" class="headerlink" title="4.4.2 Hash Table构建"></a>4.4.2 Hash Table构建</h3><p>HashBuilderOperator负责对build表构建Hash Table。它的基本流程是：</p>
+<ol>
+<li><p>addInput()时将Page累积在内存中；</p>
+</li>
+<li><p>finish()时，则创建Hash Table；</p>
+</li>
+<li><p>不再阻塞LookupJoinOperator，即LookupJoinOperator可以开始处理。</p>
+</li>
+</ol>
+<p>我们重点讲一下Hash Table的构建。JoinHash中有两个非常重要的类：PagesHash和PositionLinks。</p>
+<p>PagesHash的field有：</p>
+<p>1） addresses，对page内每一行数据进行地址编码，编码公式为<code>pageIndex &lt;&lt; 32 | rowIndex</code>，如有2个page，每个page有2行，则addresses内存放的是0，1，4294967296，4294967297；</p>
+<p>2） PageHashStrategy，会将原始的数据保存下来；</p>
+<p>3） key数组，可以理解为hash表，根据某行join key计算得到hash值，再将hash值进行hash计算得到一个hash表的offset，如果这个offset上没有值则存放该行的address，例如addresses中1这个地址对应的行计算出offset为6，而这个位置没有被占用，则key[6] &#x3D; 1；</p>
+<p>4） mask，掩码，用于对数组key求offset；</p>
+<p>5） positionToHashes，byte数组，根据join key计算hash值，但是只保存低位的byte。</p>
+<p>PositionLinks处理的是，当hash值冲突且原始值也相同时，将满足这些情况的数据address使用数组链起来。</p>
+<p>下面我们举例来说明Hash Table生成的过程。</p>
+<p><img src="/post/0/1819765-20220317150437374-2023430541.png" alt="img"></p>
+<p>Hash table构建步骤： </p>
+<ol>
+<li><p>如图所示，此例子中join key只有1个，page只有1个，其值如①所示。</p>
+</li>
+<li><p>对这些行进行地址编码，<code>pageIndex &lt;&lt; 32 | rowIndex</code>，则编码后<code>addresses</code>数组如②所示。</p>
+</li>
+<li><p>对原始数据进行hash计算（pagesHashStrategy），取低8位得到一个byte数组<code>positionToHashes</code>，结果如③所示； </p>
+</li>
+<li><p>逐行处理addresses：<code>getHashPosition(hash, mask)</code>计算<code>pos</code>值，最终得到的key数组如④所示。</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Value=1，Address=0，pos=6， key[pos] == -1 =&gt; key[6] = 0</span><br><span class="line">Value=2，Address=1，pos=4， key[4] == -1 =&gt; key[4]=1</span><br><span class="line">Value=1，Address=2，pos=6， key[6] != -1 =&gt; key[6]=2, positionLinks[2]=0</span><br><span class="line">Value=2，Address=3，pos=4， key[4] != -1 =&gt; key[4]=3, positionLinks[3]=1</span><br><span class="line">Value=3，Address=4，pos=3， key[3] == -1 =&gt; key[3]=4</span><br><span class="line">Value=4，Address=5，pos=7， key[7] == -1 =&gt; key[7]=5</span><br><span class="line">Value=5，Address=6，pos=10，key[10] == -1 =&gt; key[10]=6</span><br><span class="line">Value=6，Address=7，pos=9， key[9] == -1 =&gt; key[9]=7</span><br><span class="line">Value=7，Address=8，pos=13，key[13] == -1 =&gt; key[13]=8</span><br><span class="line">Value=1，Address=9，pos=6， key[6] != -1 =&gt; key[6]=9, positionLinks[9]=2</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>得到的<code>positionLinks</code>如⑤所示。</li>
+</ol>
+<h2 id="4-5-Hash-Join流程控制"><a href="#4-5-Hash-Join流程控制" class="headerlink" title="4.5 Hash Join流程控制"></a>4.5 Hash Join流程控制</h2><h3 id="4-5-1-HashBuilderOperator的状态转移"><a href="#4-5-1-HashBuilderOperator的状态转移" class="headerlink" title="4.5.1 HashBuilderOperator的状态转移"></a>4.5.1 HashBuilderOperator的状态转移</h3><p>这个表格是在站内的这篇文档[^4]的基础上修改而成的。</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>行为</th>
+<th>状态转移 (Next State)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>COSUMING_INPUT</td>
+<td>- 算子处于正常构建阶段，持续接收 build 端输入 Page <br> - 将行写入 PagesIndex，或触发 spill 将分区写盘<br>正常获取上游数据并积累到内存中（组织为 PagesIndex，未进行实际hash列生成）</td>
+<td>- 当 <code>finish()</code> 被调用且输入耗尽，其中无吐磁盘过程 → 转到 <strong>LOOKUP_SOURCE_BUILT</strong> <br>- 若内存不足，Driver调用<code>startMemoryRevoke()</code>进行吐磁盘过程 → 转到 <strong>SPILLING_INPUT</strong></td>
+</tr>
+<tr>
+<td>LOOKUP_SOURCE_BUILT</td>
+<td>完成 LookupSourceSupplier 对象的构建<del>（但仍未实际发生hash生成）</del>，此时也是可以吐磁盘的，因为只有实际生成 LookupSource 实例时读取 PagesIndex，此时操作仍是把原始输入数据吐出、原本构建的 Supplier 置空（但会保留checksum，保证后续使用时重建对象有一致性），状态切换到 INPUT_SPILLED</td>
+<td>- 若内存不足，Driver调用<code>startMemoryRevoke()</code>进行吐磁盘过程 → 转到 <strong>SPILLING_INPUT</strong></td>
+</tr>
+<tr>
+<td>SPILLING_INPUT</td>
+<td>由内存上报引发的状态切换，表示现在积累在内存中的数据正在异步吐磁盘且未完成。此时如果上游数据可消费，则从上游获得的 page 会被直接吐到磁盘中。</td>
+<td>- 吐磁盘完成时状态切换为 <strong>INPUT_SPILLED</strong></td>
+</tr>
+<tr>
+<td>INPUT_SPILLED</td>
+<td>所有上游消费均完成且整体放在磁盘中</td>
+<td>- 若LookUpJoinOperator没有读磁盘的请求，则直接→ <strong>CLOSE</strong><br>- 若LookUpJoinOperator需要读磁盘 → 转到 <strong>INPUT_UNSPILLING</strong><br></td>
+</tr>
+<tr>
+<td>INPUT_UNSPILLING</td>
+<td>当 LookupSource 消费端需要实际数据、必须构建 LookupSource 时，如果此时是 INPUT_SPILLED 状态，就会开始异步从磁盘加载数据并保持该状态</td>
+<td>- 读磁盘完成时状态切换为 <strong>INPUT_UNSPILLED_AND_BUILT</strong></td>
+</tr>
+<tr>
+<td>INPUT_UNSPILLED_AND_BUILT</td>
+<td>当 INPUT_UNSPILLING 结束后，当前分区所有输入数据加载到内存，生成 LookupSourceSupplier ，等待 LookupSource 实例化</td>
+<td></td>
+</tr>
+<tr>
+<td>CLOSE</td>
+<td>当前分区 LookupSource 被完全消费，可以关闭算子释放资源</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="4-5-2-LookUpJoinOperator的普通执行逻辑"><a href="#4-5-2-LookUpJoinOperator的普通执行逻辑" class="headerlink" title="4.5.2 LookUpJoinOperator的普通执行逻辑"></a>4.5.2 LookUpJoinOperator的普通执行逻辑</h3><p>Pipeline2是join真正执行的一个pipeline，这个pipeline并不是每时每刻都有数据在流转，而是受到了Driver的驱动逻辑的控制，在Presto中，算子的执行和阻塞逻辑有固定的接口方法，每个算子要实现自己的阻塞和执行逻辑，只要实现这些接口，就可以在Driver的驱动逻辑中运行：</p>
+<ul>
+<li>void finish() 通知下游算子当前算子不会再有page添加进来，当前算子要做的事就是处理已经接受到的最后这个page</li>
+<li>boolean isFinished() 当前算子不当没有page添加进来，最后的那个page也已经处理完了，不会再有page输出了。</li>
+<li>ListenableFuture&lt;?&gt; isBlocked() 当前算子是否被block了</li>
+<li>boolean needsInput() 当前算子还需要有新的page输入，和上边的 finish() 方法相反</li>
+</ul>
+<h4 id="4-5-2-1-LookUpJoinOperator的阻塞状态"><a href="#4-5-2-1-LookUpJoinOperator的阻塞状态" class="headerlink" title="4.5.2.1 LookUpJoinOperator的阻塞状态"></a>4.5.2.1 LookUpJoinOperator的阻塞状态</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> ListenableFuture&lt;?&gt; isBlocked()</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span> lookupSourceFuture;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从代码段可以看出，这个算子被阻塞的原因就是source端，即hash表有没有构造好，如果没有则返回一个Future，在needsInput()方法中会尝试去get这个future的结果，如果build端没有构造好，就返回empty，如果构造好了，就返回一个LookupSource对象。</p>
+<h4 id="4-5-2-2-LookUpJoinOperator的needsInput状态"><a href="#4-5-2-2-LookUpJoinOperator的needsInput状态" class="headerlink" title="4.5.2.2 LookUpJoinOperator的needsInput状态"></a>4.5.2.2 LookUpJoinOperator的needsInput状态</h4><p>LookupJoinOperator算子首先会作为next算子出现，所以首先会调用该算子的needsInput()方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">needsInput</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> (finishing) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (lookupSource == <span class="literal">null</span>) &#123;</span><br><span class="line">        lookupSource = tryGetFutureValue(lookupSourceFuture).orElse(<span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> lookupSource != <span class="literal">null</span> &amp;&amp; probe == <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-5-2-3-LookUpJoinOperator的finish状态"><a href="#4-5-2-3-LookUpJoinOperator的finish状态" class="headerlink" title="4.5.2.3 LookUpJoinOperator的finish状态"></a>4.5.2.3 LookUpJoinOperator的finish状态</h4><p>所有算子的结束状态分为finished状态和finishing状态，finishing状态是算子对内的一个状态，表示算子正在处理最后一个page的数据，当算子处理完这最后的一个page，状态就可以变为finished状态了，注意，这里是可以变为finished状态，不是一定能变，是否能变还会根据其他的一些条件做判断：</p>
+<ul>
+<li>是否在finishing状态</li>
+</ul>
+<p>所谓的finishing状态，就是不再需要input page，即算子正在处理最后一个input page，而LookupJoinOperator的finishing是由finish()方法设置为true的。</p>
+<ul>
+<li>是否在build的状态</li>
+</ul>
+<p>这个比较好理解，如果build端没有构造好，那么也无法开始执行join；但是注意这里是两个判断条件，即使lookupSource已经构造好了，probe也可能为空，probe为空是在一个probe端的page被处理完后被设置的，所以如果probe还不为空，说明上一个probe端的page还没处理完，也是不能开始新的probe端的page的处理的。</p>
+<p>如果LookupJoinOperator算子的上游算子finished了，即不会输出任何的page了，那么就会调用LookupJoinOperator算子的finish方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">finish</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">    finishing = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的finish方法很简单，就是把finishing置为true，标明LookupJoinOperator算子正在处理最后一个page了，此时如果再调用他的needsInput()方法，就会返回false了，其上游算子也就不会再调用getOutput方法了。</p>
+<h1 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h1><p>本次代码阅读的任务量很大，因为基本上都是我不了解的概念，所以显得有些手足无措。受限于时间，这篇文档暂且只整理了一部分内容。</p>
+<p>这篇文档比较清楚地整理了Presto的基本概念，适合对这些分布式计算框架了解甚少的读者进行阅读。</p>
+<p>对于JoinHash的过程，以一种不太复杂的方式进行了简要分析。主要关注了HashBuilderOperator算子的执行过程，LookUpJoinOperator算子的相关逻辑有待补充。</p>
+<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><p>[^1]: <a target="_blank" rel="noopener" href="https://prestodb.io/docs/current/overview.html">Presto 0.294 Documentation</a></p>
+<p>[^2]: <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Presto_(SQL%E6%9F%A5%E8%AF%A2%E5%BC%95%E6%93%8E)">Presto (SQL查询引擎) - 维基百科</a></p>
+<p>[^3]: <a target="_blank" rel="noopener" href="https://tech.meituan.com/2014/06/16/presto.html">Presto实现原理和美团的使用实践 - 美团技术团队</a></p>
+<p>[^4]: <a target="_blank" rel="noopener" href="https://kms.fineres.com/pages/viewpage.action?pageId=1174175336">Presto &#x2F; Trino Hash Join 吐磁盘策略技术细节研究 - 2. FineBI - 知识管理</a></p>
+<p>[^5]: <a target="_blank" rel="noopener" href="https://prestodb.io/docs/current/overview/concepts.html">Presto Concepts - Presto 0.294 Documentation</a></p>
+<p>[^6]:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/260399749">第1章02节 | Presto概述：特性、原理、架构 - 知乎</a></p>
+<p>[^7]:<a target="_blank" rel="noopener" href="https://trino.io/Presto_SQL_on_Everything.pdf">Presto: SQL on Everything - 官方论文</a></p>
+<p>[^8]:<a target="_blank" rel="noopener" href="https://prestodb.io/docs/current/optimizer/cost-based-optimizations.html">Cost based optimizations - Presto 0.294 Documentation</a><br>[^9]:<a target="_blank" rel="noopener" href="https://trino.io/docs/current/admin/dynamic-filtering.html">Dynamic filtering — Trino 476 Documentation</a><br>[^10]:<a target="_blank" rel="noopener" href="https://mayunlei.github.io/2020/08/16/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Presto-Presto%E7%9A%84%E5%86%85%E9%83%A8%E6%9E%B6%E6%9E%84/">深入理解Presto,Presto的内部架构 | 马云雷的技术博客</a><br>[^11]:<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1656529">Presto 核心数据结构：Slice、Page、Block-腾讯云开发者社区-腾讯云</a><br>[^12]:<a target="_blank" rel="noopener" href="https://www.cnblogs.com/huaweicloud/p/16017317.html">从构建到使用，openLooKeng 如何实现 Hash Join ？ - 华为云官方博客 - 博客园</a><br>[^13]:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54731892">Presto中的Hash Join - 知乎</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://nuit-silencieuse.github.io">Nuit-Silencieuse</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://nuit-silencieuse.github.io/post/0.html">https://nuit-silencieuse.github.io/post/0.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/0.html" title=""><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/post/e27998fa.html" title="消息队列基础"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">消息队列基础</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Nuit-Silencieuse</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">20</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Nuit-Silencieuse" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:211294023@smail.nju.edu.cn" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Presto%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">1. Presto简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E6%A6%82%E8%A7%88"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 概览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 相关概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-Server-Types"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.2.1 Server Types</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Coordinator"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">Coordinator</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Worker"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">Worker</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-Data-Sources-10"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2.2 Data Sources[^ 10]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-3-Query-execution-model"><span class="toc-number">1.2.3.</span> <span class="toc-text">1.2.3 Query-execution-model</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Statement"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">Statement</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Query"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">Query</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Query-Plan"><span class="toc-number">1.2.3.3.</span> <span class="toc-text">Query Plan</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Plan-Fragment"><span class="toc-number">1.2.3.4.</span> <span class="toc-text">Plan Fragment</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Stage"><span class="toc-number">1.2.3.5.</span> <span class="toc-text">Stage</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Task"><span class="toc-number">1.2.3.6.</span> <span class="toc-text">Task</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Split"><span class="toc-number">1.2.3.7.</span> <span class="toc-text">Split</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Driver"><span class="toc-number">1.2.3.8.</span> <span class="toc-text">Driver</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-4-%E5%85%B6%E4%BB%96%E6%A6%82%E5%BF%B5"><span class="toc-number">1.2.4.</span> <span class="toc-text">1.2.4 其他概念</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%9F%A5%E8%AF%A2%E6%89%A7%E8%A1%8C%E6%A8%A1%E5%9E%8B%E2%80%94%E2%80%94%E4%BB%A5%E8%A1%A8%E8%BF%9E%E6%8E%A5%E4%B8%BA%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">2. 查询执行模型——以表连接为例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%A6%82%E8%A7%88"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 概览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E9%80%BB%E8%BE%91%E6%9F%A5%E8%AF%A2%E8%AE%A1%E5%88%92"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 逻辑查询计划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9F%A5%E8%AF%A2%E8%AE%A1%E5%88%92"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 分布式查询计划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-Task%E5%88%86%E9%85%8D"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 Task分配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 执行过程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Hash-Join%E7%AE%97%E6%B3%95%E8%83%8C%E6%99%AF"><span class="toc-number">3.</span> <span class="toc-text">3. Hash Join算法背景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 核心概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 数据模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-Slice"><span class="toc-number">3.2.1.</span> <span class="toc-text">3.2.1 Slice</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-Block"><span class="toc-number">3.2.2.</span> <span class="toc-text">3.2.2 Block</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-Page"><span class="toc-number">3.2.3.</span> <span class="toc-text">3.2.3 Page</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Hash-Join%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0"><span class="toc-number">4.</span> <span class="toc-text">4. Hash Join算法概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-Join%E8%AF%AD%E5%8F%A5"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 Join语句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92%E6%80%BB%E8%A7%88"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 执行计划总览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-Join%E7%9B%B8%E5%85%B3%E7%9A%84Stage"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 Join相关的Stage</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-Stage-Performance"><span class="toc-number">4.3.1.</span> <span class="toc-text">4.3.1 Stage Performance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-2-%E5%AF%B9build%E8%A1%A8%E7%9A%84%E6%8B%89%E5%8F%96%E5%92%8Crepartition"><span class="toc-number">4.3.2.</span> <span class="toc-text">4.3.2 对build表的拉取和repartition</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-3-%E4%BD%BF%E7%94%A8HashBuilderOperator%E6%9E%84%E5%BB%BAHashMap"><span class="toc-number">4.3.3.</span> <span class="toc-text">4.3.3 使用HashBuilderOperator构建HashMap</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#PageHash"><span class="toc-number">4.3.3.1.</span> <span class="toc-text">PageHash</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-Hash-Join%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 Hash Join实现方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-1-Hash-Join%E7%B1%BB%E5%9B%BE"><span class="toc-number">4.4.1.</span> <span class="toc-text">4.4.1 Hash Join类图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-2-Hash-Table%E6%9E%84%E5%BB%BA"><span class="toc-number">4.4.2.</span> <span class="toc-text">4.4.2 Hash Table构建</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-Hash-Join%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6"><span class="toc-number">4.5.</span> <span class="toc-text">4.5 Hash Join流程控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-1-HashBuilderOperator%E7%9A%84%E7%8A%B6%E6%80%81%E8%BD%AC%E7%A7%BB"><span class="toc-number">4.5.1.</span> <span class="toc-text">4.5.1 HashBuilderOperator的状态转移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-2-LookUpJoinOperator%E7%9A%84%E6%99%AE%E9%80%9A%E6%89%A7%E8%A1%8C%E9%80%BB%E8%BE%91"><span class="toc-number">4.5.2.</span> <span class="toc-text">4.5.2 LookUpJoinOperator的普通执行逻辑</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-2-1-LookUpJoinOperator%E7%9A%84%E9%98%BB%E5%A1%9E%E7%8A%B6%E6%80%81"><span class="toc-number">4.5.2.1.</span> <span class="toc-text">4.5.2.1 LookUpJoinOperator的阻塞状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-2-2-LookUpJoinOperator%E7%9A%84needsInput%E7%8A%B6%E6%80%81"><span class="toc-number">4.5.2.2.</span> <span class="toc-text">4.5.2.2 LookUpJoinOperator的needsInput状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-2-3-LookUpJoinOperator%E7%9A%84finish%E7%8A%B6%E6%80%81"><span class="toc-number">4.5.2.3.</span> <span class="toc-text">4.5.2.3 LookUpJoinOperator的finish状态</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">5. 总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="toc-number">6.</span> <span class="toc-text">参考文档</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/2eecb142.html" title="Termius 全平台 SSH 管理与远程开发实践"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Termius 全平台 SSH 管理与远程开发实践"/></a><div class="content"><a class="title" href="/post/2eecb142.html" title="Termius 全平台 SSH 管理与远程开发实践">Termius 全平台 SSH 管理与远程开发实践</a><time datetime="2026-05-15T07:04:39.000Z" title="Created 2026-05-15 15:04:39">2026-05-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/a946a899.html" title="SSH 从原理到 Windows 远程开发实践"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SSH 从原理到 Windows 远程开发实践"/></a><div class="content"><a class="title" href="/post/a946a899.html" title="SSH 从原理到 Windows 远程开发实践">SSH 从原理到 Windows 远程开发实践</a><time datetime="2026-05-15T07:02:29.000Z" title="Created 2026-05-15 15:02:29">2026-05-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/0.html" title="Untitled"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Untitled"/></a><div class="content"><a class="title" href="/post/0.html" title="Untitled">Untitled</a><time datetime="2026-05-14T16:25:58.374Z" title="Created 2026-05-15 00:25:58">2026-05-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/0.html" title="Untitled"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Untitled"/></a><div class="content"><a class="title" href="/post/0.html" title="Untitled">Untitled</a><time datetime="2026-05-14T16:25:56.811Z" title="Created 2026-05-15 00:25:56">2026-05-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/e27998fa.html" title="消息队列基础"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消息队列基础"/></a><div class="content"><a class="title" href="/post/e27998fa.html" title="消息队列基础">消息队列基础</a><time datetime="2025-02-21T14:29:46.000Z" title="Created 2025-02-21 22:29:46">2025-02-21</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By Nuit-Silencieuse</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
